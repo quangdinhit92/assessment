@@ -20,5 +20,7 @@ sealed class AppDestination(val route: String) {
             destination = "detail/$id"
         }
     }
+    object VisitGarden: AppDestination(route = "visitgarden")
+    object SelectCrop: AppDestination(route = "selectcrop")
 
 }
