@@ -36,8 +36,9 @@ fun TitleScreen(title:String) {
 
 
 @Composable
-@Preview(uiMode = UI_MODE_NIGHT_NO, showSystemUi = true, device = Devices.TABLET)
-@Preview(uiMode = UI_MODE_NIGHT_NO, showSystemUi = true, device = Devices.PHONE)
-fun previewTitle() {
+//@Preview(uiMode = UI_MODE_NIGHT_NO, showSystemUi = true, device = Devices.TABLET)
+//@Preview(uiMode = UI_MODE_NIGHT_NO, showSystemUi = true, device = Devices.PHONE)
+@Preview
+fun PreviewTitle() {
     TitleScreen("title")
 }
