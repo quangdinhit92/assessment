@@ -22,5 +22,5 @@ sealed class AppDestination(val route: String) {
     }
     object VisitGarden: AppDestination(route = "visitgarden")
     object SelectCrop: AppDestination(route = "selectcrop")
-
+    object LoginScreen: AppDestination(route = "login")
 }
