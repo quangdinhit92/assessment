@@ -51,9 +51,7 @@ fun LoginContent(onClick:() -> Unit) {
     ) {
         TitleScreen("Harvest Login")
         AppIcon()
-        LoginForm(onClick = {
-            onClick.invoke()
-        })
+        LoginForm(onClick)
     }
 }
 
