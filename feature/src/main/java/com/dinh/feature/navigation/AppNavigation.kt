@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.dinh.feature.ui.screen.detail.DetailScreen
 import com.dinh.feature.ui.screen.home.HomeScreen
 import com.dinh.feature.ui.screen.login.LoginScreen
+import com.dinh.feature.ui.screen.mygarden.MyGardenScreen
 import com.dinh.feature.ui.screen.selectcrop.SelectCropScreen
 import com.dinh.feature.ui.screen.visitgardern.VisitGardenScreen
 
@@ -45,12 +46,20 @@ fun AppNavigation(
             })
         }
         composable(route = AppDestination.SelectCrop.route) {
-            SelectCropScreen()
+            SelectCropScreen(onNavigate = {
+                navController.navigate(it.destination)
+            })
         }
         composable(route = AppDestination.LoginScreen.route) {
             LoginScreen(onNavigate = {
                 navController.navigate(it.destination)
             })
         }
+
+        composable(route = AppDestination.MyGardenScreen.route) {
+            MyGardenScreen()
+        }
+
+
     }
 }
