@@ -36,6 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dinh.feature.R
 import com.dinh.feature.navigation.AppDestination
+import com.dinh.feature.ui.component.TitleScreen
 
 @Composable
 fun VisitGardenScreen(
@@ -83,17 +84,18 @@ fun VisitGardenContent(onClickVisitGarden : ()-> Unit) {
             contentDescription = null,
             painter = painterResource(R.drawable.visit_garden_background)
         )
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(screenHeight / 8f),
-                contentDescription = null,
-                contentScale = ContentScale.FillWidth,
-                painter = painterResource(R.drawable.screen_title)
-            )
-            Text("Visit garden", color = Color.White, fontSize = 24.sp)
-        }
+//        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+//            Image(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(screenHeight / 8f),
+//                contentDescription = null,
+//                contentScale = ContentScale.FillWidth,
+//                painter = painterResource(R.drawable.screen_title)
+//            )
+//            Text("Visit garden", color = Color.White, fontSize = 24.sp)
+//        }
+        TitleScreen("Visit garden")
 
 
     }
