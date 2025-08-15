@@ -3,6 +3,7 @@ package com.dinh.feature.ui.screen.selectcrop
 import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,20 +35,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.dinh.domain.entities.CropEntity
 import com.dinh.feature.R
+import com.dinh.feature.navigation.AppDestination
 import com.dinh.feature.ui.component.TitleScreen
 import com.dinh.feature.ui.screen.visitgardern.VisitGardenViewModel
 
 @Composable
-fun SelectCropScreen(viewModel: SelectCropViewModel = hiltViewModel()) {
+fun SelectCropScreen(
+    viewModel: SelectCropViewModel = hiltViewModel(), onNavigate: (AppDestination) -> Unit
+) {
 
     val crops = viewModel.output.crop.collectAsState()
 
-    SelectCropContent(arrayOf<Int>(1, 2, 3, 4, 5, 6, 9))
+    SelectCropContent(crops.value) {
+        onNavigate.invoke(AppDestination.MyGardenScreen)
+    }
 }
 
 @Composable
-fun SelectCropContent(cropitems: Array<Int>) {
+fun SelectCropContent(cropitems: List<CropEntity>, onItemClick: () -> Unit) {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
 
@@ -74,17 +81,6 @@ fun SelectCropContent(cropitems: Array<Int>) {
         )
 
         Column(modifier = Modifier.fillMaxSize()) {
-//            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-//                Image(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(screenHeight / 8f),
-//                    contentDescription = null,
-//                    contentScale = ContentScale.FillWidth,
-//                    painter = painterResource(R.drawable.screen_title)
-//                )
-//                Text("Select crop", color = Color.White, fontSize = 24.sp)
-//            }
             TitleScreen("Select crop")
             LazyVerticalGrid(
 
@@ -92,15 +88,19 @@ fun SelectCropContent(cropitems: Array<Int>) {
                 columns = GridCells.Adaptive(minSize = 100.dp), // số cột
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFFEFB8C8)),
+                //    .background(Color(0xFFEFB8C8))
+                ,
                 contentPadding = PaddingValues(horizontal = spacing, vertical = spacing),
                 horizontalArrangement = Arrangement.spacedBy(spacing),
                 verticalArrangement = Arrangement.spacedBy(spacing)
             ) {
                 items(cropitems) { item ->
                     Box(
-                        modifier = Modifier.aspectRatio(1.0f)
-                    ) {
+                        modifier = Modifier
+                            .aspectRatio(1.0f)
+                            .clickable {
+                                onItemClick.invoke()
+                            }) {
                         Image(
                             modifier = Modifier.fillMaxSize(),
 
@@ -122,6 +122,11 @@ fun SelectCropContent(cropitems: Array<Int>) {
 @Preview
 @Composable
 fun previewSelectCropScreen() {
-    SelectCropContent(arrayOf<Int>(1, 2, 3))
+    SelectCropContent(
+        listOf<CropEntity>(
+            CropEntity("1", "1", "1"),
+            CropEntity("1", "1", "1"),
+            CropEntity("1", "1", "1"),
+        ), {})
 
 }

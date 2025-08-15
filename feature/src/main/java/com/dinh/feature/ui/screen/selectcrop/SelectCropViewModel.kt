@@ -7,6 +7,7 @@ import com.dinh.domain.entities.CropEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 
@@ -28,4 +29,12 @@ class SelectCropViewModel @Inject constructor(
         get() = _crops
 
 
+    init {
+        _crops.update {
+            listOf( CropEntity("1", "1", "1"),
+                CropEntity("1", "1", "1"),
+                CropEntity("1", "1", "1"),)
+        }
+
+    }
 }
