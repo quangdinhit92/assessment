@@ -118,5 +118,7 @@ dependencies {
     testImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
     implementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
+    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
 
 }
