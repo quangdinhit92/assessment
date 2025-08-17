@@ -79,8 +79,8 @@ fun VisitGardenContent(onClickVisitGarden : ()-> Unit) {
         }) {
 
         Image(
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Fit,
+            modifier = Modifier.matchParentSize(),
+            contentScale = ContentScale.Crop,
             contentDescription = null,
             painter = painterResource(R.drawable.visit_garden_background)
         )
