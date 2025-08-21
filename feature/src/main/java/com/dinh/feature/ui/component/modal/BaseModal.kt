@@ -1,10 +1,10 @@
-import android.R.attr.bottom
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
@@ -57,7 +57,7 @@ fun Modifier.customShadow(
     offsetX: Dp = 0.dp,
     spread: Float = 0f,
 ) = this.then(
-    Modifier.drawBehind() {
+    Modifier.drawBehind {
         val paint = Paint()
         val frameworkPaint = paint.asFrameworkPaint()
 
@@ -101,27 +101,44 @@ fun BaseModal(
     onPressConfirm: () -> Unit,
     content: @Composable () -> Unit,
 ) {
-    Column(
-        modifier = modifier
+    Box(
+        modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .background(ModalColors.DarkBrown, shape)
-            .padding(borderWidth)
-            .background(ModalColors.MediumBrown, shape)
-            .padding(borderWidth)
-            .background(ModalColors.LightBrown, shape)
-            .padding(borderWidth)
-            .background(ModalColors.SaddleBrown, shape)
-            .padding(borderWidth)
-            .background(background, shape)
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
+                .wrapContentHeight()
+                .background(ModalColors.DarkBrown, shape)
+                .padding(borderWidth)
+                .background(ModalColors.MediumBrown, shape)
+                .padding(borderWidth)
+                .background(ModalColors.LightBrown, shape)
+                .padding(borderWidth)
+                .background(ModalColors.SaddleBrown, shape)
+                .padding(borderWidth)
+                .background(background, shape)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 200.dp)
+                    .wrapContentHeight()
+                    .padding(top = 60.dp, bottom = 40.dp, start = 8.dp, end = 8.dp)
+            ) {
+                content()
+            }
+        }
+
+        Box(
+            modifier = Modifier
                 .height(60.dp)
+                .fillMaxWidth()
+                .align(Alignment.TopCenter)
                 .customShadow(
                     color = ModalColors.ButtonShadowColor,
-                    cornerRadius = 4.dp,
+                    cornerRadius = cornerRadius,
                     blurRadius = 12.dp,
                     offsetY = 4.dp
                 )
@@ -129,8 +146,9 @@ fun BaseModal(
                 .padding(borderWidth)
                 .background(ModalColors.MediumBrown, shape)
                 .padding(borderWidth)
-                .background(ModalColors.SaddleBrown, shape)
+                .background(ModalColors.LightBrown, shape)
                 .padding(borderWidth)
+                .background(ModalColors.SaddleBrown, shape)
         ) {
             Text(
                 text = title,
@@ -143,44 +161,31 @@ fun BaseModal(
 
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(vertical = padding, horizontal = 8.dp)
-        ) {
-            content()
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Box(
-                modifier = Modifier
-                    .widthIn(min = 120.dp)
-                    .height(40.dp)
-                    .customShadow(
-                        color = ModalColors.ButtonShadowColor,
-                        cornerRadius = 4.dp,
-                        blurRadius = 12.dp,
-                        offsetY = 4.dp
-                    )
-                    .background(ModalColors.DarkBrown, shape)
-                    .padding(borderWidth)
-                    .background(ModalColors.MediumBrown, shape)
-                    .padding(borderWidth)
-                    .background(ModalColors.ButtonConfirmGradient, shape)
-                    .clickable { onPressConfirm() }
-                    .padding(horizontal = 16.dp)
-                    .align(Alignment.Center)
-            ) {
-                Text(
-                    text = textConfirm,
-                    modifier = Modifier.align(Alignment.Center),
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp
+                .widthIn(min = 150.dp)
+                .height(40.dp)
+                .align(Alignment.BottomCenter)
+                .offset(y = 0.dp)
+                .customShadow(
+                    color = ModalColors.ButtonShadowColor,
+                    cornerRadius = cornerRadius,
+                    blurRadius = 12.dp,
+                    offsetY = 4.dp
                 )
-            }
+                .background(ModalColors.DarkBrown, shape)
+                .padding(borderWidth)
+                .background(ModalColors.MediumBrown, shape)
+                .padding(borderWidth)
+                .background(ModalColors.ButtonConfirmGradient, shape)
+                .clickable { onPressConfirm() }
+                .padding(horizontal = 16.dp)
+        ) {
+            Text(
+                text = textConfirm,
+                modifier = Modifier.align(Alignment.Center),
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 12.sp
+            )
         }
     }
 }

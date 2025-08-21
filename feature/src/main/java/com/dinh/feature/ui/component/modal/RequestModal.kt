@@ -21,14 +21,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -48,6 +48,15 @@ private object RequestModalColors {
     val TurquoiseStart = Color(0xFF1BA3C6)
     val TurquoiseEnd = Color(0xFF4FC3F7)
     val TurquoiseMid = Color(0xFF29B6D1)
+
+    val DarkBrown: Color = Color(0xFF5a320f)
+    val MediumBrown: Color = Color(0xFFbe8c3c)
+    val LightBrown: Color = Color(0xFFd7a046)
+    val SaddleBrown: Color = Color(0xFF8B4513)
+
+    val ButtonConfirmGradient = Brush.verticalGradient(
+        colors = listOf(MediumBrown, LightBrown)
+    )
 
     val BackgroundGradient = Brush.verticalGradient(
         colors = listOf(TurquoiseStart, TurquoiseMid, TurquoiseEnd)
@@ -100,7 +109,7 @@ fun RequestModalButton(
     modifier: Modifier = Modifier,
     borderWidth: Dp = 2.dp,
     text: String = "Sample Button",
-    cornerRadius: Dp = 8.dp,
+    cornerRadius: Dp = 12.dp,
     shape: Shape = RoundedCornerShape(cornerRadius),
     imageSize: Dp = 24.dp,
     image: Int? = null,
@@ -154,7 +163,6 @@ fun RequestModalButton(
     }
 }
 
-
 data class Option(
     val onPress: () -> Unit,
     val title: String,
@@ -167,8 +175,12 @@ fun RequestModal(
     subTitle: String = "Sub Title",
     description: String = "Description",
     textConfirm: String = "Confirm",
+    textDone: String = "Done",
+    textWait: String = "Wait",
     options: Array<Option> = emptyArray(),
     onPressConfirm: () -> Unit = {},
+    onPressDone: () -> Unit = {},
+    onPressWait: () -> Unit = {},
 ) {
     BaseModal(
         modifier = modifier
@@ -244,31 +256,74 @@ fun RequestModal(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                RequestModalButton(
+                Box(
                     modifier = Modifier
                         .weight(1f)
                         .height(40.dp)
                         .customShadow(
                             color = RequestModalColors.ButtonShadowColor,
-                            offsetX = 0.dp,
-                            offsetY = 4.dp,
-                            blurRadius = 12.dp
+                            cornerRadius = 12.dp,
+                            blurRadius = 12.dp,
+                            offsetY = 4.dp
+                        )
+                        .background(RequestModalColors.DarkBrown, RoundedCornerShape(12.dp))
+                        .padding(2.dp)
+                        .background(RequestModalColors.MediumBrown, RoundedCornerShape(12.dp))
+                        .padding(2.dp)
+                        .background(
+                            RequestModalColors.ButtonConfirmGradient,
+                            RoundedCornerShape(12.dp)
+                        )
+                        .clickable { onPressWait() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = textWait,
+                        fontSize = 12.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        style = TextStyle(
+                            shadow = Shadow(
+                                color = Color.Black.copy(alpha = 0.5f),
+                                offset = Offset(1f, 1f),
+                                blurRadius = 2f
+                            )
                         ),
-                    text = "Sample Button 3"
-                )
+                    )
+                }
 
-                RequestModalButton(
+                Box(
                     modifier = Modifier
                         .weight(1f)
                         .height(40.dp)
                         .customShadow(
                             color = RequestModalColors.ButtonShadowColor,
-                            offsetX = 0.dp,
-                            offsetY = 4.dp,
-                            blurRadius = 12.dp
+                            cornerRadius = 12.dp,
+                            blurRadius = 12.dp,
+                            offsetY = 4.dp
+                        )
+                        .background(RequestModalColors.DarkGreen, RoundedCornerShape(12.dp))
+                        .padding(2.dp)
+                        .background(RequestModalColors.MediumGreen, RoundedCornerShape(12.dp))
+                        .padding(2.dp)
+                        .background(RequestModalColors.LightGreen, RoundedCornerShape(12.dp))
+                        .clickable { onPressDone() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = textDone,
+                        fontSize = 12.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        style = TextStyle(
+                            shadow = Shadow(
+                                color = Color.Black.copy(alpha = 0.5f),
+                                offset = Offset(1f, 1f),
+                                blurRadius = 2f
+                            )
                         ),
-                    text = "Sample Button 4"
-                )
+                    )
+                }
             }
         }
     }
