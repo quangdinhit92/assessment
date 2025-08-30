@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.dinh.feature.ui.screen.detail.DetailScreen
 import com.dinh.feature.ui.screen.home.HomeScreen
 import com.dinh.feature.ui.screen.login.LoginScreen
+import com.dinh.feature.ui.screen.mygarden.MyGardenScreen
 import com.dinh.feature.ui.screen.selectcrop.SelectCropScreen
 import com.dinh.feature.ui.screen.visitgardern.VisitGardenScreen
 
@@ -26,38 +27,39 @@ fun AppNavigation(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(AppDestination.HomeScreen.route)
-        {
+        composable(AppDestination.HomeScreen.route) {
             HomeScreen(onNavigate = {
                 navController.navigate(it.destination)
             })
         }
-        composable(AppDestination.DetailScreen.route)
-        {
+        composable(AppDestination.DetailScreen.route) {
             val argument = it.arguments
             argument?.let {
                 val myId = it.getString(DETAIL_ID, "")
                 DetailScreen(
-                    id = myId,
-                    onNavigate = { navController.navigate(it.destination) })
+                    id = myId, onNavigate = { navController.navigate(it.destination) })
             }
         }
-        composable(route = AppDestination.VisitGarden.route)
-        {
+        composable(route = AppDestination.VisitGarden.route) {
             VisitGardenScreen(onNavigate = {
                 navController.navigate(it.destination)
             })
         }
-        composable(route = AppDestination.SelectCrop.route)
-        {
-            SelectCropScreen()
+        composable(route = AppDestination.SelectCrop.route) {
+            SelectCropScreen(onNavigate = {
+                navController.navigate(it.destination)
+            })
         }
-
         composable(route = AppDestination.LoginScreen.route) {
             LoginScreen(onNavigate = {
                 navController.navigate(it.destination)
             })
         }
+
+        composable(route = AppDestination.MyGardenScreen.route) {
+            MyGardenScreen()
+        }
+
 
     }
 }
