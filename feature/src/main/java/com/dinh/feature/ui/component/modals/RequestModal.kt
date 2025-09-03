@@ -1,4 +1,4 @@
-package com.dinh.feature.ui.component.modal
+package com.dinh.feature.ui.component.modals
 
 import BaseModal
 import androidx.compose.foundation.Image
@@ -20,15 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -39,70 +34,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-private object RequestModalColors {
-    val DarkGreen: Color = Color(0xFF084808)
-    val MediumGreen: Color = Color(0xFF69c969)
-    val LightGreen: Color = Color(0xFF00a86b)
-
-    val TurquoiseStart = Color(0xFF1BA3C6)
-    val TurquoiseEnd = Color(0xFF4FC3F7)
-    val TurquoiseMid = Color(0xFF29B6D1)
-
-    val DarkBrown: Color = Color(0xFF5a320f)
-    val MediumBrown: Color = Color(0xFFbe8c3c)
-    val LightBrown: Color = Color(0xFFd7a046)
-    val SaddleBrown: Color = Color(0xFF8B4513)
-
-    val ButtonConfirmGradient = Brush.verticalGradient(
-        colors = listOf(MediumBrown, LightBrown)
-    )
-
-    val BackgroundGradient = Brush.verticalGradient(
-        colors = listOf(TurquoiseStart, TurquoiseMid, TurquoiseEnd)
-    )
-
-    val ButtonShadowColor = Color.Black.copy(alpha = 0.3f)
-}
-
-fun Modifier.customShadow(
-    color: Color = Color.Black.copy(alpha = 0.3f),
-    cornerRadius: Dp = 0.dp,
-    blurRadius: Dp = 12.dp,
-    offsetY: Dp = 0.dp,
-    offsetX: Dp = 0.dp,
-    spread: Float = 0f,
-) = this.then(
-    Modifier.drawBehind {
-        val paint = Paint()
-        val frameworkPaint = paint.asFrameworkPaint()
-
-        frameworkPaint.color = android.graphics.Color.TRANSPARENT
-        frameworkPaint.setShadowLayer(
-            blurRadius.toPx(),
-            offsetX.toPx(),
-            offsetY.toPx(),
-            color.copy(alpha = 0.4f).toArgb()
-        )
-
-        val left = 0f - spread
-        val top = 0f - spread
-        val right = size.width + spread
-        val bottom = size.height + spread
-
-        drawIntoCanvas { canvas ->
-            canvas.drawRoundRect(
-                left,
-                top,
-                right,
-                bottom,
-                cornerRadius.toPx(),
-                cornerRadius.toPx(),
-                paint
-            )
-        }
-    }
-)
+import customShadow
 
 @Composable
 fun RequestModalButton(
@@ -120,11 +52,11 @@ fun RequestModalButton(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .background(RequestModalColors.DarkGreen, shape)
+            .background(ModalTheme.DarkGreen, shape)
             .padding(borderWidth)
-            .background(RequestModalColors.MediumGreen, shape)
+            .background(ModalTheme.MediumGreen, shape)
             .padding(borderWidth)
-            .background(RequestModalColors.LightGreen, shape)
+            .background(ModalTheme.LightGreen, shape)
             .let { if (onClick != null) it.clickable { onClick() } else it }
     ) {
         Row(
@@ -187,7 +119,7 @@ fun RequestModal(
             .fillMaxWidth()
             .wrapContentHeight(),
         title = title,
-        background = RequestModalColors.BackgroundGradient,
+        background = ModalTheme.BackgroundGradient,
         textConfirm = textConfirm,
         onPressConfirm = onPressConfirm
     ) {
@@ -224,7 +156,7 @@ fun RequestModal(
                                 .fillMaxWidth()
                                 .height(40.dp)
                                 .customShadow(
-                                    color = RequestModalColors.ButtonShadowColor,
+                                    color = ModalTheme.ButtonShadowColor,
                                     offsetX = 0.dp,
                                     offsetY = 4.dp,
                                     blurRadius = 12.dp
@@ -253,25 +185,27 @@ fun RequestModal(
             )
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxWidth()
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
             ) {
                 Box(
                     modifier = Modifier
                         .weight(1f)
                         .height(40.dp)
                         .customShadow(
-                            color = RequestModalColors.ButtonShadowColor,
+                            color = ModalTheme.ButtonShadowColor,
                             cornerRadius = 12.dp,
                             blurRadius = 12.dp,
                             offsetY = 4.dp
                         )
-                        .background(RequestModalColors.DarkBrown, RoundedCornerShape(12.dp))
+                        .background(ModalTheme.DarkBrown, RoundedCornerShape(12.dp))
                         .padding(2.dp)
-                        .background(RequestModalColors.MediumBrown, RoundedCornerShape(12.dp))
+                        .background(ModalTheme.MediumBrown, RoundedCornerShape(12.dp))
                         .padding(2.dp)
                         .background(
-                            RequestModalColors.ButtonConfirmGradient,
+                            ModalTheme.ButtonConfirmGradient,
                             RoundedCornerShape(12.dp)
                         )
                         .clickable { onPressWait() },
@@ -297,16 +231,16 @@ fun RequestModal(
                         .weight(1f)
                         .height(40.dp)
                         .customShadow(
-                            color = RequestModalColors.ButtonShadowColor,
+                            color = ModalTheme.ButtonShadowColor,
                             cornerRadius = 12.dp,
                             blurRadius = 12.dp,
                             offsetY = 4.dp
                         )
-                        .background(RequestModalColors.DarkGreen, RoundedCornerShape(12.dp))
+                        .background(ModalTheme.DarkGreen, RoundedCornerShape(12.dp))
                         .padding(2.dp)
-                        .background(RequestModalColors.MediumGreen, RoundedCornerShape(12.dp))
+                        .background(ModalTheme.MediumGreen, RoundedCornerShape(12.dp))
                         .padding(2.dp)
-                        .background(RequestModalColors.LightGreen, RoundedCornerShape(12.dp))
+                        .background(ModalTheme.LightGreen, RoundedCornerShape(12.dp))
                         .clickable { onPressDone() },
                     contentAlignment = Alignment.Center
                 ) {

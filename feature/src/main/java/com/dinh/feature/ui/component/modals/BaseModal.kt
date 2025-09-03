@@ -1,7 +1,6 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -28,7 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private object ModalColors {
+object ModalTheme {
     val DarkBrown: Color = Color(0xFF5a320f)
     val MediumBrown: Color = Color(0xFFbe8c3c)
     val LightBrown: Color = Color(0xFFd7a046)
@@ -37,6 +36,10 @@ private object ModalColors {
     val TurquoiseStart = Color(0xFF1BA3C6)
     val TurquoiseEnd = Color(0xFF4FC3F7)
     val TurquoiseMid = Color(0xFF29B6D1)
+
+    val DarkGreen: Color = Color(0xFF084808)
+    val MediumGreen: Color = Color(0xFF69c969)
+    val LightGreen: Color = Color(0xFF00a86b)
 
     val BackgroundGradient = Brush.verticalGradient(
         colors = listOf(TurquoiseStart, TurquoiseMid, TurquoiseEnd)
@@ -95,10 +98,10 @@ fun BaseModal(
     cornerRadius: Dp = 16.dp,
     padding: Dp = 16.dp,
     shape: Shape = RoundedCornerShape(cornerRadius),
-    background: Brush = ModalColors.BackgroundGradient,
+    background: Brush = ModalTheme.BackgroundGradient,
     title: String = "Title",
     textConfirm: String = "Confirm",
-    onPressConfirm: () -> Unit,
+    onPressConfirm: (() -> Unit)? = null, // Made nullable and removed default lambda
     content: @Composable () -> Unit,
 ) {
     Box(
@@ -110,13 +113,13 @@ fun BaseModal(
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .background(ModalColors.DarkBrown, shape)
+                .background(ModalTheme.DarkBrown, shape)
                 .padding(borderWidth)
-                .background(ModalColors.MediumBrown, shape)
+                .background(ModalTheme.MediumBrown, shape)
                 .padding(borderWidth)
-                .background(ModalColors.LightBrown, shape)
+                .background(ModalTheme.LightBrown, shape)
                 .padding(borderWidth)
-                .background(ModalColors.SaddleBrown, shape)
+                .background(ModalTheme.SaddleBrown, shape)
                 .padding(borderWidth)
                 .background(background, shape)
         ) {
@@ -125,7 +128,7 @@ fun BaseModal(
                     .fillMaxWidth()
                     .heightIn(min = 200.dp)
                     .wrapContentHeight()
-                    .padding(top = 60.dp, bottom = 40.dp, start = 8.dp, end = 8.dp)
+                    .padding(top = 66.dp, bottom = 40.dp, start = 8.dp, end = 8.dp)
             ) {
                 content()
             }
@@ -137,18 +140,18 @@ fun BaseModal(
                 .fillMaxWidth()
                 .align(Alignment.TopCenter)
                 .customShadow(
-                    color = ModalColors.ButtonShadowColor,
+                    color = ModalTheme.ButtonShadowColor,
                     cornerRadius = cornerRadius,
                     blurRadius = 12.dp,
                     offsetY = 4.dp
                 )
-                .background(ModalColors.DarkBrown, shape)
+                .background(ModalTheme.DarkBrown, shape)
                 .padding(borderWidth)
-                .background(ModalColors.MediumBrown, shape)
+                .background(ModalTheme.MediumBrown, shape)
                 .padding(borderWidth)
-                .background(ModalColors.LightBrown, shape)
+                .background(ModalTheme.LightBrown, shape)
                 .padding(borderWidth)
-                .background(ModalColors.SaddleBrown, shape)
+                .background(ModalTheme.SaddleBrown, shape)
         ) {
             Text(
                 text = title,
@@ -159,32 +162,53 @@ fun BaseModal(
             )
         }
 
-        Box(
-            modifier = Modifier
-                .widthIn(min = 150.dp)
-                .height(40.dp)
-                .align(Alignment.BottomCenter)
-                .offset(y = 0.dp)
-                .customShadow(
-                    color = ModalColors.ButtonShadowColor,
-                    cornerRadius = cornerRadius,
-                    blurRadius = 12.dp,
-                    offsetY = 4.dp
+        onPressConfirm?.let { confirmAction ->
+            Box(
+                modifier = Modifier
+                    .widthIn(min = 150.dp)
+                    .height(40.dp)
+                    .align(Alignment.BottomCenter)
+                    .offset(y = 0.dp)
+                    .customShadow(
+                        color = ModalTheme.ButtonShadowColor,
+                        cornerRadius = cornerRadius,
+                        blurRadius = 12.dp,
+                        offsetY = 4.dp
+                    )
+                    .background(ModalTheme.DarkBrown, shape)
+                    .padding(borderWidth)
+                    .background(ModalTheme.MediumBrown, shape)
+                    .padding(borderWidth)
+                    .background(ModalTheme.ButtonConfirmGradient, shape)
+                    .clickable { confirmAction() }
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text(
+                    text = textConfirm,
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp
                 )
-                .background(ModalColors.DarkBrown, shape)
-                .padding(borderWidth)
-                .background(ModalColors.MediumBrown, shape)
-                .padding(borderWidth)
-                .background(ModalColors.ButtonConfirmGradient, shape)
-                .clickable { onPressConfirm() }
-                .padding(horizontal = 16.dp)
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, widthDp = 320)
+@Composable
+fun PreviewBaseModalWithButton() {
+    MaterialTheme {
+        BaseModal(
+            modifier = Modifier.fillMaxWidth(),
+            title = "With Button",
+            onPressConfirm = {
+                println("Button pressed in preview")
+            }
         ) {
             Text(
-                text = textConfirm,
-                modifier = Modifier.align(Alignment.Center),
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 12.sp
+                text = "Sample Content with Button",
+                color = Color.White
             )
         }
     }
@@ -192,17 +216,14 @@ fun BaseModal(
 
 @Preview(showBackground = true, widthDp = 320)
 @Composable
-fun PreviewBaseModal() {
+fun PreviewBaseModalWithoutButton() {
     MaterialTheme {
         BaseModal(
             modifier = Modifier.fillMaxWidth(),
-            title = "Sample Title",
-            onPressConfirm = {
-                println("Button pressed in preview")
-            }
+            title = "Without Button"
         ) {
             Text(
-                text = "Sample Content",
+                text = "Sample Content without Button",
                 color = Color.White
             )
         }
