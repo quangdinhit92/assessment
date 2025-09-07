@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.dinh.feature.ui.screen.detail.DetailScreen
 import com.dinh.feature.ui.screen.home.HomeScreen
 import com.dinh.feature.ui.screen.login.LoginScreen
+import com.dinh.feature.ui.screen.main.MainScreen
 import com.dinh.feature.ui.screen.mygarden.MyGardenScreen
 import com.dinh.feature.ui.screen.selectcrop.SelectCropScreen
 import com.dinh.feature.ui.screen.visitgardern.VisitGardenScreen
@@ -20,13 +21,18 @@ import com.dinh.feature.ui.screen.visitgardern.VisitGardenScreen
 @Composable
 fun AppNavigation(
     navController: NavHostController = rememberNavController(),
-    startDestination: String = AppDestination.LoginScreen.destination
+    startDestination: String = AppDestination.LoginScreen.destination,
 ) {
     NavHost(
         modifier = Modifier.padding(WindowInsets.statusBars.asPaddingValues()),
         navController = navController,
         startDestination = startDestination
     ) {
+        composable(route = AppDestination.MainScreen.route) {
+            MainScreen(onNavigate = {
+                navController.navigate(it.destination)
+            })
+        }
         composable(AppDestination.HomeScreen.route) {
             HomeScreen(onNavigate = {
                 navController.navigate(it.destination)

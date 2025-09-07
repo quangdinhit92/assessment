@@ -12,6 +12,7 @@ sealed class AppDestination(val route: String) {
     open val arguments: List<NamedNavArgument> = emptyList()
 
     object HomeScreen : AppDestination("home")
+    object MainScreen : AppDestination("Main")
     object DetailScreen : AppDestination("detail/{$DETAIL_ID}") {
         override val arguments: List<NamedNavArgument> =
             listOf(navArgument(DETAIL_ID) { type = NavType.StringType })

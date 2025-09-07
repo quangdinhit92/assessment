@@ -37,7 +37,7 @@ fun LoginScreen(
     onNavigate: (AppDestination) -> Unit
 ) {
     LoginContent(onClick = {
-        onNavigate.invoke(AppDestination.VisitGarden)
+        onNavigate.invoke(AppDestination.MainScreen)
     })
 }
 
