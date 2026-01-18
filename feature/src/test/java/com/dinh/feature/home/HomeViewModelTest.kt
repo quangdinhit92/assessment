@@ -8,7 +8,7 @@ import com.dinh.feature.BaseViewModelTest
 import com.dinh.feature.StandardDispatcherRule
 import com.dinh.feature.UiModel.toUiModel
 import com.dinh.feature.test.MockUtil
-import com.dinh.feature.ui.screen.home.Actions
+import com.dinh.feature.ui.screen.home.HomeIntents
 import com.dinh.feature.ui.screen.home.HomeViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -53,7 +53,7 @@ class HomeViewModelTest : BaseViewModelTest() {
         viewModel = HomeViewModel(watcher.testDispatcherProvider, mockUsecase)
 
         // When
-        viewModel.onHandleAction(Actions.onSearch(searchTerm, limit))
+        viewModel.onHandleIntent(HomeIntents.SearchQuerry(searchTerm, limit))
 
         // Then
         // Verify search query is updated
@@ -124,7 +124,7 @@ class HomeViewModelTest : BaseViewModelTest() {
 
         viewModel=HomeViewModel(watcher.testDispatcherProvider,mockUsecase)
 
-        viewModel.onHandleAction(Actions.onSearch(searchTerm, limit))
+        viewModel.onHandleIntent(HomeIntents.SearchQuerry(searchTerm, limit))
 
         viewModel.output.listSeach.test {
             assert(0 == awaitItem().size)

@@ -9,7 +9,7 @@ import com.dinh.feature.BaseViewModelTest
 import com.dinh.feature.StandardDispatcherRule
 import com.dinh.feature.navigation.AppDestination
 import com.dinh.feature.test.MockUtil
-import com.dinh.feature.ui.screen.home.Actions
+import com.dinh.feature.ui.screen.home.HomeIntents
 import com.dinh.feature.ui.screen.home.HomeScreen
 import com.dinh.feature.ui.screen.home.HomeViewModel
 import com.dinh.feature.ui.screen.home.loadingTestTag
@@ -84,7 +84,7 @@ class HomeScreenTest : BaseViewModelTest() {
                 any()
             )
         } returns flowOf(result)
-        homeViewModel.onHandleAction(Actions.onSearch("searchTerm", 5))
+        homeViewModel.onHandleIntent(HomeIntents.SearchQuerry("searchTerm", 5))
         composeTestRule.onNodeWithTag(loadingTestTag).assertIsDisplayed()
         // Given
 //        val searchTerm = "test"

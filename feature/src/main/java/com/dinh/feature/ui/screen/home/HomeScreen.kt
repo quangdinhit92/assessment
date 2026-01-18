@@ -79,11 +79,17 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), onNavigate: (AppDesti
         }
     }
 
-    LaunchedEffect(viewModel.navigator) {
-        viewModel.navigator.collect {
-            onNavigate(it)
+
+    LaunchedEffect(viewModel.event) {
+        viewModel.event.collect {
+            when(it)
+            {
+                is HomeEvent.NavigateTo -> onNavigate(it.destination)
+                is HomeEvent.Error -> TODO()
+            }
         }
     }
+
     var refreshing by remember {
         mutableStateOf(false)
     }
@@ -99,18 +105,20 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), onNavigate: (AppDesti
     HomeContent(
         loading,
         searchString,
-        onChange = { viewModel.onHandleAction(Actions.onSearch(it, 25)) },
+        onChange = {
+                        viewModel.handleIntent(HomeIntents.SearchQuerry(it,25))
+                   },
         onClearSearch = {
-            viewModel.onHandleAction(Actions.clearSearch)
+            viewModel.handleIntent(HomeIntents.ClearSearch)
         },
         onItemClick = {
-            viewModel.onHandleAction(Actions.onClickDetail(it))
+            viewModel.handleIntent(HomeIntents.OpenDetail(it.collectionId!!))
         },
         onloadMore = {
-            viewModel.onHandleAction(Actions.onLoadmore)
+            viewModel.handleIntent(HomeIntents.LoadMore)
         },
         onRefresh = {
-            viewModel.onHandleAction(Actions.onRefresh)
+            viewModel.handleIntent(HomeIntents.Refresh)
         },
         isRefreshing = refreshing,
         items
@@ -162,7 +170,7 @@ fun HomeContent(
                         Icon(imageVector = Icons.Default.Search, contentDescription = null)
                     },
                     trailingIcon = {
-                        IconButton(onClick = { onClearSearch }) {
+                        IconButton(onClick = { onClearSearch.invoke() }) {
                             if (search.isNotEmpty()) Icon(
                                 imageVector = Icons.Default.Clear, contentDescription = null
                             )
@@ -217,8 +225,8 @@ fun HomeContent(
 
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_NO, showSystemUi = true, device = Devices.TABLET)
-@Preview(uiMode = UI_MODE_NIGHT_NO, showSystemUi = true, device = Devices.PHONE)
+@Preview(uiMode = UI_MODE_NIGHT_NO, showSystemUi = true, device = "spec:width=1280dp,height=800dp,dpi=240")
+@Preview(uiMode = UI_MODE_NIGHT_NO, showSystemUi = true, device = "spec:width=411dp,height=891dp")
 @Composable()
 fun previewHomeScreen(@PreviewParameter(HomePreviewParameterProvider::class) previewParam: HomePreviewParameter) {
     HomeContent(

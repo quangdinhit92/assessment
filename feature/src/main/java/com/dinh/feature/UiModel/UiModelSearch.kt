@@ -2,7 +2,7 @@ package com.dinh.feature.UiModel
 
 import com.dinh.domain.entities.ItemSearchEntity
 
-data class UiModelSearch(
+data class  UiModelSearch(
     val artistId: Long?,
     val collectionId: Long?,
     val artistName: String,

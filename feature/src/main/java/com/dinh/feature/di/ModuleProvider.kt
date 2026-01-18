@@ -5,9 +5,6 @@ import com.dinh.data.repository.GetDetailRepositoryImpl
 import com.dinh.data.repository.SearchRepositoryImpl
 import com.dinh.domain.repository.IGetDetailRepository
 import com.dinh.domain.repository.ISearchRepository
-import com.dinh.feature.fortestingpurpose.HeavyComputationTemplate
-import com.dinh.feature.fortestingpurpose.HeavyComputationTemplateImpl
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,12 +27,4 @@ class ModuleProvider {
     fun provideDetailRepository(api: ApiServices): IGetDetailRepository {
         return GetDetailRepositoryImpl(api)
     }
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class BindObject() {
-    @Binds
-    abstract fun bindExampleRepo(heavyComputationTemplate: HeavyComputationTemplateImpl): HeavyComputationTemplate
-
 }
